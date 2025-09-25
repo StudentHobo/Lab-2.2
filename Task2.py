@@ -1,4 +1,3 @@
-
 LOGFILE = "sample_auth_small.log"  # change filename if needed
 
 def ip_parser(line):
@@ -17,29 +16,20 @@ def ip_parser(line):
             return None
 
     return None
-
+    
 ## This is the main block that will run first. 
 ## It will call any functions from above that we might need.
 if __name__ == "__main__":
-    import re
-    ips=[]
-    count=0
-    with open(LOGFILE, "r") as f:
+
+    from collections import defaultdict
+
+    counts = defaultdict(int)           # Create a dictionary to keep track of IPs
+
+    with open("sample_auth_small.log") as f:
         for line in f:
-            print (ip_parser(line.strip()))
-            pattern = r"\d+\.\d+\.\d+\.\d+"
-            found_ips = re.findall(pattern, line)
-            for ip in found_ips:
-                ips.append(ip_parser(line.strip()))
-            count+=1
-    ##print(ips)
-    unique_ips = set(ips)
-  ##print(unique_ips)
-    sortedIps = sorted(unique_ips, key=lambda kv:[1], reverse=True)[:10]
-   ## print(unique_ips)
-    print ("Lines read:", count)
-    print("Unique Ips:", len(unique_ips))
-    print("First 10 Ips:", sortedIps)
-   ## print(sortIp)
-            
-            
+            if "Failed password" in line or "Invalid user" in line:
+                # extract ip
+                ip = ip_parser(line)
+                if ip:
+                    counts[ip] += 1
+    print(counts)
