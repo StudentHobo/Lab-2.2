@@ -1,6 +1,6 @@
+
 LOGFILE = "sample_auth_small.log"  # change filename if needed
-import time
-   
+
 def ip_parser(line):
     """
     looks for the substring ' from ' and returns the following IP number.
@@ -20,11 +20,7 @@ def ip_parser(line):
 
 from collections import defaultdict
 
-## This is the main block that will run first. 
-## It will call any functions from above that we might need.
 if __name__ == "__main__":
-
-    start = time.time()
 
     counts = defaultdict(int)           # Create a dictionary to keep track of IPs
 
@@ -35,27 +31,4 @@ if __name__ == "__main__":
                 ip = ip_parser(line)
                 if ip:
                     counts[ip] += 1
-
-    print(counts)
-    def top_n(counts, n=5):
-        return sorted(counts.items(), key=lambda kv: kv[1], reverse=True)[:n]
-    
-    final_list = top_n(counts)
-
-    rank = 0
-
-    with open('failed_counts.txt', 'w') as f:
-        for i in final_list:
-            rank += 1 
-            print (rank,".", i[0],"—",i[1])
-            f.write(str(rank)+". "+str(i[0])+" — "+str(i[1])+"\n")
-
-    print("Wrote failed_counts.txt")
-
-    
-    # run counting
-    end = time.time()
-    print("Elapsed:", round(end-start,4), "seconds")
-
-
-
+print(counts)
